@@ -5,7 +5,7 @@ camera 2 is on the right
 @author: djlab
 '''
 import numpy as np
-import cv2
+import cv2;
 import cv;
 import datetime;
 
