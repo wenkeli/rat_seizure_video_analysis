@@ -262,7 +262,7 @@
    <sender>startButton</sender>
    <signal>clicked()</signal>
    <receiver>MainW</receiver>
-   <slot>setupFolders()</slot>
+   <slot>startRun()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>165</x>
@@ -274,10 +274,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>stopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainW</receiver>
+   <slot>stopRun()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>256</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>379</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>quit()</slot>
   <slot>selectMasterFolder()</slot>
-  <slot>setupFolders()</slot>
+  <slot>startRun()</slot>
+  <slot>stopRun()</slot>
  </slots>
 </ui>

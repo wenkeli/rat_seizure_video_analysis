@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainw.ui'
 #
-# Created: Fri May 29 15:44:35 2015
+# Created: Fri May 29 15:58:12 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,7 +78,8 @@ class Ui_MainW(object):
         self.retranslateUi(MainW)
         QtCore.QObject.connect(self.quitButton, QtCore.SIGNAL("clicked()"), MainW.quit)
         QtCore.QObject.connect(self.selectMasterButton, QtCore.SIGNAL("clicked()"), MainW.selectMasterFolder)
-        QtCore.QObject.connect(self.startButton, QtCore.SIGNAL("clicked()"), MainW.setupFolders)
+        QtCore.QObject.connect(self.startButton, QtCore.SIGNAL("clicked()"), MainW.startRun)
+        QtCore.QObject.connect(self.stopButton, QtCore.SIGNAL("clicked()"), MainW.stopRun)
         QtCore.QMetaObject.connectSlotsByName(MainW)
 
     def retranslateUi(self, MainW):

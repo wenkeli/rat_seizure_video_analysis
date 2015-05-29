@@ -5,7 +5,10 @@ import time;
 from PySide.QtGui import QMainWindow, QApplication;
 from PySide.QtGui import QFileDialog;
 
-from PySide.QtCore import Qt;
+from PySide.QtCore import Qt, QThread;
+
+from ..threads.threadcommdata import ThreadCommData;
+from ..threads.videothread import VideoThread;
 
 from mainw_ui import Ui_MainW;
 
@@ -20,9 +23,14 @@ class MainW(QMainWindow, Ui_MainW):
         
         self.__rat1ID="";
         self.__rat2ID="";
+        
+        self.__threadData=ThreadCommData();
+        self.__vidThread=VideoThread(self.__threadData);
                 
         self.setWindowFlags(Qt.CustomizeWindowHint
                             | Qt.WindowMinimizeButtonHint);
+                            
+        self.setInputUIEnabled(False);
         
         
     def quit(self):
@@ -35,6 +43,14 @@ class MainW(QMainWindow, Ui_MainW):
         self.__dataDirValid=True;
         print(self.__dataDir);
         self.masterPathLabel.setText(self.__dataDir);
+        self.setInputUIEnabled(True);
+        
+        
+    def setInputUIEnabled(self, enable):
+        self.rat1IDInput.setEnabled(enable);
+        self.rat2IDInput.setEnabled(enable);
+        self.videoDurationBox.setEnabled(enable);
+        self.numVideosBox.setEnabled(enable);
         
         
     def validateRatIDs(self):
@@ -50,6 +66,15 @@ class MainW(QMainWindow, Ui_MainW):
         if(not self.validateRatIDs()):
             return False;
         return True;
+    
+    def startRun(self):
+        self.setupFolders();
+        self.setInputUIEnabled(False);
+        self.startButton.setEnabled(False);
+        self.selectMasterButton.setEnabled(False);
+        self.quitButton.setEnabled(False);
+        
+        self.__vidThread.start(QThread.TimeCriticalPriority);
     
     def setupFolders(self):
         if(not self.validateInputs()):
@@ -68,3 +93,9 @@ class MainW(QMainWindow, Ui_MainW):
         os.mkdir(self.__rat1Dir);
         os.mkdir(self.__rat2Dir);
         
+    def stopRun(self):
+        self.__threadData.stopflag=True;
+        
+        self.stopButton.setEnabled(False);
+        self.quitButton.setEnabled(True);
+    
