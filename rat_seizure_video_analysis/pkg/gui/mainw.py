@@ -9,6 +9,7 @@ from PySide.QtCore import Qt, QThread;
 
 from ..threads.threadcommdata import ThreadCommData;
 from ..threads.videothread import VideoThread;
+from ..threads.analysisthread import AnalysisThread;
 
 from mainw_ui import Ui_MainW;
 
@@ -26,6 +27,7 @@ class MainW(QMainWindow, Ui_MainW):
         
         self.__threadData=ThreadCommData();
         self.__vidThread=VideoThread(self.__threadData);
+        self.__analysisThread=AnalysisThread(self.__threadData);
                 
         self.setWindowFlags(Qt.CustomizeWindowHint
                             | Qt.WindowMinimizeButtonHint);
@@ -75,6 +77,7 @@ class MainW(QMainWindow, Ui_MainW):
         self.quitButton.setEnabled(False);
         
         self.__vidThread.start(QThread.TimeCriticalPriority);
+        self.__analysisThread.start(QThread.LowestPriority);
     
     def setupFolders(self):
         if(not self.validateInputs()):
