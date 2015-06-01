@@ -5,6 +5,7 @@ import time;
 from PySide.QtGui import QMainWindow, QApplication;
 from PySide.QtGui import QFileDialog;
 
+from PySide import QtCore;
 from PySide.QtCore import Qt, QThread;
 
 from ..threads.threadcommdata import ThreadCommData;
@@ -28,6 +29,10 @@ class MainW(QMainWindow, Ui_MainW):
         self.__threadData=ThreadCommData();
         self.__vidThread=VideoThread(self.__threadData);
         self.__analysisThread=AnalysisThread(self.__threadData);
+        QtCore.QObject.connect(self.__vidThread, QtCore.SIGNAL("finished()"), self.stopRun);
+        QtCore.QObject.connect(self.__analysisThread, QtCore.SIGNAL("finished()"), self.enableQuit);
+        
+        self.__analysisThread.isFinished()
                 
         self.setWindowFlags(Qt.CustomizeWindowHint
                             | Qt.WindowMinimizeButtonHint);
@@ -75,6 +80,9 @@ class MainW(QMainWindow, Ui_MainW):
         self.startButton.setEnabled(False);
         self.selectMasterButton.setEnabled(False);
         self.quitButton.setEnabled(False);
+        numFrames=self.numVideosBox.value()*self.videoDurationBox.value()*60*30;
+        self.__threadData.vidFrames=[None]*numFrames;
+        self.__threadData.totalFrames=numFrames;
         
         self.__vidThread.start(QThread.TimeCriticalPriority);
         self.__analysisThread.start(QThread.LowestPriority);
@@ -98,7 +106,9 @@ class MainW(QMainWindow, Ui_MainW):
         
     def stopRun(self):
         self.__threadData.stopflag=True;
+        self.stopButton.setEnabled(False);
         
+    def enableQuit(self):
         self.stopButton.setEnabled(False);
         self.quitButton.setEnabled(True);
     

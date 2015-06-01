@@ -1,4 +1,3 @@
-import time;
 from PySide.QtCore import QThread;
 
 from .threadcommdata import ThreadCommData;
@@ -11,15 +10,15 @@ class AnalysisThread(QThread):
         
     def run(self):
         while(True):
-            time.sleep(1);
-            print("2");
-            if(self.__threadData.analysisInd<len(self.__threadData.vidFNames)):
-                self.analyzeFile();
-            if(self.__threadData.stopflag):
+#             self.msleep(150);
+            if(self.__threadData.analysisInd<self.__threadData.acqFrameInd):
+                curFrame=self.__threadData.vidFrames[self.__threadData.analysisInd];
+                print(str(self.__threadData.analysisInd));
+                self.__threadData.vidFrames[self.__threadData.analysisInd]=None;
+                self.__threadData.analysisInd=self.__threadData.analysisInd+1;
+                del(curFrame);
+            
+            if(self.__threadData.stopflag and (self.__threadData.analysisInd>=self.__threadData.acqFrameInd)):
                 print("stopped");
                 break;
-            
-    def analyzeFile(self):
-        print(self.__threadData.vidFNames[self.__threadData.analysisInd]);
-        self.__threadData.analysisInd=self.__threadData.analysisInd+1;
     

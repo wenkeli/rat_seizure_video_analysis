@@ -1,4 +1,4 @@
-import time;
+import numpy as np;
 from PySide.QtCore import QThread;
 
 from .threadcommdata import ThreadCommData;
@@ -13,12 +13,11 @@ class VideoThread(QThread):
         
     def run(self):
         while(True):
-            time.sleep(5);
-            print("1");
-            self.__threadData.vidFNames.append("test"+str(self.__curVidCount));
-            self.__curVidCount=self.__curVidCount+1;
+#             self.msleep(100);
+            self.__threadData.vidFrames[self.__threadData.acqFrameInd]=np.random.random((500, 500));
+            self.__threadData.acqFrameInd=self.__threadData.acqFrameInd+1;
             
-            if(self.__threadData.stopflag):
+            if(self.__threadData.stopflag or (self.__threadData.acqFrameInd>=self.__threadData.totalFrames)):
                 print("stopped");
                 break;
 
