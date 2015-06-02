@@ -84,6 +84,8 @@ class MainW(QMainWindow, Ui_MainW):
         numFrames=self.numVideosBox.value()*self.videoDurationBox.value()*60*30;
         self.__tData.vidFrames=[None]*numFrames;
         self.__tData.totalFrames=numFrames;
+        self.__tData.framesPerVid=self.videoDurationBox.value()*60*30;
+        self.__tData.numVids=self.numVideosBox.value();
         
         self.__vidThread.start(QThread.TimeCriticalPriority);
         self.__analysisThread.start(QThread.LowestPriority);
@@ -104,6 +106,9 @@ class MainW(QMainWindow, Ui_MainW):
         
         os.mkdir(self.__rat1Dir);
         os.mkdir(self.__rat2Dir);
+        
+        self.__tData.ratIDs=[self.__rat1ID, self.__rat2ID];
+        self.__tData.ratDirs=[self.__rat1Dir, self.__rat2Dir];
         
     def stopRun(self):
         self.__tData.stopflag=True;

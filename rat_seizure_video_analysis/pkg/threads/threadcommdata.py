@@ -8,3 +8,8 @@ class ThreadCommData(object):
         self.vidFrames=[];
         self.acqFInd=0;
         self.totalFrames=0;
+        self.framesPerVid=0;
+        self.numVids=0;
+        
+        self.ratIDs=[];
+        self.ratDirs=[];
