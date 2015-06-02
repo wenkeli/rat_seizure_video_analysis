@@ -17,7 +17,6 @@ class AnalysisThread(QThread):
         while(True):
             if(self.__tData.analysisInd<self.__tData.acqFInd):
                 curFrame=self.__tData.vidFrames[self.__tData.analysisInd];
-                print(str(self.__tData.analysisInd));
                 self.__tData.vidFrames[self.__tData.analysisInd]=None;
                 self.__tData.analysisInd=self.__tData.analysisInd+1;
                 del(curFrame);
