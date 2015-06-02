@@ -16,9 +16,15 @@ class AnalysisThread(QThread):
     def run(self):
         while(True):
             if(self.__tData.analysisInd<self.__tData.acqFInd):
+                
                 curFrame=self.__tData.vidFrames[self.__tData.analysisInd];
                 self.__tData.vidFrames[self.__tData.analysisInd]=None;
                 self.__tData.analysisInd=self.__tData.analysisInd+1;
+                
+                if(curFrame is None):
+                    print("empty frame!");
+                    continue;
+                    
                 del(curFrame);
             
             if(self.__tData.stopflag and (self.__tData.analysisInd>=self.__tData.acqFInd)):
