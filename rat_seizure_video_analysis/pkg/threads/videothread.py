@@ -34,3 +34,5 @@ class VideoThread(QThread):
             if(self.__tData.stopflag or (self.__tData.acqFInd>=self.__tData.totalFrames)):
                 print("stopped");
                 break;
+            
+        cam.release();

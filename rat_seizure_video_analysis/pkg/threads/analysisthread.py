@@ -1,3 +1,8 @@
+import numpy as np;
+import cv;
+import cv2;
+
+
 from PySide.QtCore import QThread;
 
 from .threadcommdata import ThreadCommData;
