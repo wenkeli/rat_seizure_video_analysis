@@ -6,19 +6,18 @@ class AnalysisThread(QThread):
     def __init__(self, threadData, parent=None):
         super(AnalysisThread, self).__init__(parent);
         
-        self.__threadData=threadData;
+        self.__tData=threadData;
         
     def run(self):
         while(True):
-#             self.msleep(150);
-            if(self.__threadData.analysisInd<self.__threadData.acqFrameInd):
-                curFrame=self.__threadData.vidFrames[self.__threadData.analysisInd];
-                print(str(self.__threadData.analysisInd));
-                self.__threadData.vidFrames[self.__threadData.analysisInd]=None;
-                self.__threadData.analysisInd=self.__threadData.analysisInd+1;
+            if(self.__tData.analysisInd<self.__tData.acqFInd):
+                curFrame=self.__tData.vidFrames[self.__tData.analysisInd];
+                print(str(self.__tData.analysisInd));
+                self.__tData.vidFrames[self.__tData.analysisInd]=None;
+                self.__tData.analysisInd=self.__tData.analysisInd+1;
                 del(curFrame);
             
-            if(self.__threadData.stopflag and (self.__threadData.analysisInd>=self.__threadData.acqFrameInd)):
+            if(self.__tData.stopflag and (self.__tData.analysisInd>=self.__tData.acqFInd)):
                 print("stopped");
                 break;
     

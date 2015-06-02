@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainw.ui'
 #
-# Created: Sun May 31 20:18:01 2015
+# Created: Tue Jun  2 12:56:48 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,7 +19,7 @@ class Ui_MainW(object):
         sizePolicy.setHeightForWidth(MainW.sizePolicy().hasHeightForWidth())
         MainW.setSizePolicy(sizePolicy)
         self.selectMasterButton = QtGui.QPushButton(MainW)
-        self.selectMasterButton.setGeometry(QtCore.QRect(10, 40, 111, 21))
+        self.selectMasterButton.setGeometry(QtCore.QRect(10, 40, 101, 31))
         self.selectMasterButton.setObjectName("selectMasterButton")
         self.masterPathLabel = QtGui.QLabel(MainW)
         self.masterPathLabel.setGeometry(QtCore.QRect(10, 15, 411, 21))
@@ -33,19 +33,19 @@ class Ui_MainW(object):
         self.rat1IDInput = QtGui.QLineEdit(MainW)
         self.rat1IDInput.setGeometry(QtCore.QRect(70, 80, 341, 31))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.rat1IDInput.setFont(font)
         self.rat1IDInput.setPlaceholderText("")
         self.rat1IDInput.setObjectName("rat1IDInput")
         self.rat2IDInput = QtGui.QLineEdit(MainW)
         self.rat2IDInput.setGeometry(QtCore.QRect(70, 120, 341, 31))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.rat2IDInput.setFont(font)
         self.rat2IDInput.setPlaceholderText("")
         self.rat2IDInput.setObjectName("rat2IDInput")
         self.startButton = QtGui.QPushButton(MainW)
-        self.startButton.setGeometry(QtCore.QRect(110, 240, 84, 21))
+        self.startButton.setGeometry(QtCore.QRect(110, 240, 84, 25))
         self.startButton.setObjectName("startButton")
         self.videoDurationBox = QtGui.QSpinBox(MainW)
         self.videoDurationBox.setGeometry(QtCore.QRect(150, 170, 121, 22))
@@ -69,10 +69,10 @@ class Ui_MainW(object):
         self.videoDurationUnitLabel.setGeometry(QtCore.QRect(280, 170, 59, 21))
         self.videoDurationUnitLabel.setObjectName("videoDurationUnitLabel")
         self.stopButton = QtGui.QPushButton(MainW)
-        self.stopButton.setGeometry(QtCore.QRect(220, 240, 84, 21))
+        self.stopButton.setGeometry(QtCore.QRect(220, 240, 84, 25))
         self.stopButton.setObjectName("stopButton")
         self.quitButton = QtGui.QPushButton(MainW)
-        self.quitButton.setGeometry(QtCore.QRect(0, 304, 51, 21))
+        self.quitButton.setGeometry(QtCore.QRect(0, 300, 51, 25))
         self.quitButton.setObjectName("quitButton")
 
         self.retranslateUi(MainW)

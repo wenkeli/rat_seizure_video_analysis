@@ -26,9 +26,9 @@ class MainW(QMainWindow, Ui_MainW):
         self.__rat1ID="";
         self.__rat2ID="";
         
-        self.__threadData=ThreadCommData();
-        self.__vidThread=VideoThread(self.__threadData);
-        self.__analysisThread=AnalysisThread(self.__threadData);
+        self.__tData=ThreadCommData();
+        self.__vidThread=VideoThread(self.__tData);
+        self.__analysisThread=AnalysisThread(self.__tData);
         QtCore.QObject.connect(self.__vidThread, QtCore.SIGNAL("finished()"), self.stopRun);
         QtCore.QObject.connect(self.__analysisThread, QtCore.SIGNAL("finished()"), self.enableQuit);
         
@@ -80,9 +80,10 @@ class MainW(QMainWindow, Ui_MainW):
         self.startButton.setEnabled(False);
         self.selectMasterButton.setEnabled(False);
         self.quitButton.setEnabled(False);
+        
         numFrames=self.numVideosBox.value()*self.videoDurationBox.value()*60*30;
-        self.__threadData.vidFrames=[None]*numFrames;
-        self.__threadData.totalFrames=numFrames;
+        self.__tData.vidFrames=[None]*numFrames;
+        self.__tData.totalFrames=numFrames;
         
         self.__vidThread.start(QThread.TimeCriticalPriority);
         self.__analysisThread.start(QThread.LowestPriority);
@@ -105,7 +106,7 @@ class MainW(QMainWindow, Ui_MainW):
         os.mkdir(self.__rat2Dir);
         
     def stopRun(self):
-        self.__threadData.stopflag=True;
+        self.__tData.stopflag=True;
         self.stopButton.setEnabled(False);
         
     def enableQuit(self):

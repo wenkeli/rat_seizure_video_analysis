@@ -6,5 +6,5 @@ class ThreadCommData(object):
         self.vidFNames=[];
         self.analysisInd=0;
         self.vidFrames=[];
-        self.acqFrameInd=0;
+        self.acqFInd=0;
         self.totalFrames=0;
