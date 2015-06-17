@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainw.ui'
 #
-# Created: Tue Jun  2 12:56:48 2015
+# Created: Wed Jun 17 18:06:01 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_MainW(object):
     def setupUi(self, MainW):
         MainW.setObjectName("MainW")
-        MainW.resize(433, 330)
+        MainW.resize(440, 330)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -25,20 +25,20 @@ class Ui_MainW(object):
         self.masterPathLabel.setGeometry(QtCore.QRect(10, 15, 411, 21))
         self.masterPathLabel.setObjectName("masterPathLabel")
         self.rat1IDLabel = QtGui.QLabel(MainW)
-        self.rat1IDLabel.setGeometry(QtCore.QRect(0, 80, 59, 31))
+        self.rat1IDLabel.setGeometry(QtCore.QRect(8, 80, 51, 31))
         self.rat1IDLabel.setObjectName("rat1IDLabel")
         self.rat2IDLabel = QtGui.QLabel(MainW)
-        self.rat2IDLabel.setGeometry(QtCore.QRect(0, 120, 59, 31))
+        self.rat2IDLabel.setGeometry(QtCore.QRect(8, 120, 51, 31))
         self.rat2IDLabel.setObjectName("rat2IDLabel")
         self.rat1IDInput = QtGui.QLineEdit(MainW)
-        self.rat1IDInput.setGeometry(QtCore.QRect(70, 80, 341, 31))
+        self.rat1IDInput.setGeometry(QtCore.QRect(70, 80, 231, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.rat1IDInput.setFont(font)
         self.rat1IDInput.setPlaceholderText("")
         self.rat1IDInput.setObjectName("rat1IDInput")
         self.rat2IDInput = QtGui.QLineEdit(MainW)
-        self.rat2IDInput.setGeometry(QtCore.QRect(70, 120, 341, 31))
+        self.rat2IDInput.setGeometry(QtCore.QRect(70, 120, 231, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.rat2IDInput.setFont(font)
@@ -74,6 +74,24 @@ class Ui_MainW(object):
         self.quitButton = QtGui.QPushButton(MainW)
         self.quitButton.setGeometry(QtCore.QRect(0, 300, 51, 25))
         self.quitButton.setObjectName("quitButton")
+        self.rat1CamIDLabel = QtGui.QLabel(MainW)
+        self.rat1CamIDLabel.setGeometry(QtCore.QRect(310, 80, 51, 31))
+        self.rat1CamIDLabel.setObjectName("rat1CamIDLabel")
+        self.rat2CamIDLabel = QtGui.QLabel(MainW)
+        self.rat2CamIDLabel.setGeometry(QtCore.QRect(310, 120, 51, 31))
+        self.rat2CamIDLabel.setObjectName("rat2CamIDLabel")
+        self.rat1CamIDBox = QtGui.QSpinBox(MainW)
+        self.rat1CamIDBox.setGeometry(QtCore.QRect(370, 80, 61, 31))
+        self.rat1CamIDBox.setMinimum(-1)
+        self.rat1CamIDBox.setMaximum(1000)
+        self.rat1CamIDBox.setProperty("value", -1)
+        self.rat1CamIDBox.setObjectName("rat1CamIDBox")
+        self.rat2CamIDBox = QtGui.QSpinBox(MainW)
+        self.rat2CamIDBox.setGeometry(QtCore.QRect(370, 120, 61, 31))
+        self.rat2CamIDBox.setMinimum(-1)
+        self.rat2CamIDBox.setMaximum(1000)
+        self.rat2CamIDBox.setProperty("value", -1)
+        self.rat2CamIDBox.setObjectName("rat2CamIDBox")
 
         self.retranslateUi(MainW)
         QtCore.QObject.connect(self.quitButton, QtCore.SIGNAL("clicked()"), MainW.quit)
@@ -86,12 +104,14 @@ class Ui_MainW(object):
         MainW.setWindowTitle(QtGui.QApplication.translate("MainW", "control", None, QtGui.QApplication.UnicodeUTF8))
         self.selectMasterButton.setText(QtGui.QApplication.translate("MainW", "select master", None, QtGui.QApplication.UnicodeUTF8))
         self.masterPathLabel.setText(QtGui.QApplication.translate("MainW", "path", None, QtGui.QApplication.UnicodeUTF8))
-        self.rat1IDLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">rat1 ID</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.rat2IDLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">rat2 ID</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.rat1IDLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">rat1: ID</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.rat2IDLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">rat2: ID</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.startButton.setText(QtGui.QApplication.translate("MainW", "start", None, QtGui.QApplication.UnicodeUTF8))
         self.videoDurationLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">duration per Video</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.numVideosLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">number of videos</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.videoDurationUnitLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p>minutes</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.stopButton.setText(QtGui.QApplication.translate("MainW", "stop", None, QtGui.QApplication.UnicodeUTF8))
         self.quitButton.setText(QtGui.QApplication.translate("MainW", "quit", None, QtGui.QApplication.UnicodeUTF8))
+        self.rat1CamIDLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">camID</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.rat2CamIDLabel.setText(QtGui.QApplication.translate("MainW", "<html><head/><body><p align=\"right\">camID</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
 

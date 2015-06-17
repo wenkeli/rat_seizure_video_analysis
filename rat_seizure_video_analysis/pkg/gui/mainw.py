@@ -8,9 +8,13 @@ from PySide.QtGui import QFileDialog;
 from PySide import QtCore;
 from PySide.QtCore import Qt, QThread;
 
-from ..threads.threadcommdata import ThreadCommData;
-from ..threads.videothread import VideoThread;
-from ..threads.analysisthread import AnalysisThread;
+# from ..threads.threadcommdata import ThreadCommData;
+# from ..threads.videothread import VideoThread;
+# from ..threads.analysisthread import AnalysisThread;
+
+from ..data.camthreadsbuf import CamThreadsBuf;
+from ..threads.camthread import CamThread;
+from ..threads.processthread import ProcessThread;
 
 from mainw_ui import Ui_MainW;
 
@@ -26,19 +30,20 @@ class MainW(QMainWindow, Ui_MainW):
         self.__rat1ID="";
         self.__rat2ID="";
         
-        self.__tData=ThreadCommData();
-        self.__vidThread=VideoThread(self.__tData);
-        self.__analysisThread=AnalysisThread(self.__tData);
-        QtCore.QObject.connect(self.__vidThread, QtCore.SIGNAL("finished()"), self.stopRun);
-        QtCore.QObject.connect(self.__analysisThread, QtCore.SIGNAL("finished()"), self.enableQuit);
+        self.__rat1CamID=-1;
+        self.__rat2CamID=-1;
         
-        self.__analysisThread.isFinished()
+        self.__nFsPerVid=-1;
+        self.__numVids=-1;
+        
+        self.__tData=[];
+        self.__camThread=None;
+        self.__procThread=None;
                 
         self.setWindowFlags(Qt.CustomizeWindowHint
                             | Qt.WindowMinimizeButtonHint);
-                            
-        self.setInputUIEnabled(False);
-        
+        self.__setInputUIEnabled(False);
+            
         
     def quit(self):
         self.__app.closeAllWindows();
@@ -50,71 +55,90 @@ class MainW(QMainWindow, Ui_MainW):
         self.__dataDirValid=True;
         print(self.__dataDir);
         self.masterPathLabel.setText(self.__dataDir);
-        self.setInputUIEnabled(True);
+        self.__setInputUIEnabled(True);
+        self.stopButton.setEnabled(False);
         
         
-    def setInputUIEnabled(self, enable):
+    def __setInputUIEnabled(self, enable):
         self.rat1IDInput.setEnabled(enable);
         self.rat2IDInput.setEnabled(enable);
+        self.rat1CamIDBox.setEnabled(enable);
+        self.rat2CamIDBox.setEnabled(enable);
         self.videoDurationBox.setEnabled(enable);
         self.numVideosBox.setEnabled(enable);
+        self.startButton.setEnabled(enable);
+        self.stopButton.setEnabled(enable);
         
         
-    def validateRatIDs(self):
-        self.__rat1ID=self.rat1IDInput.text();
-        self.__rat2ID=self.rat2IDInput.text();
-        if(self.__rat1ID=="" or self.__rat2ID==""):
-            return False;
-        return True;
-        
-    def validateInputs(self):
+    def __validateInputs(self):
         if(not self.__dataDirValid):
             return False;
-        if(not self.validateRatIDs()):
+        self.__rat1ID=self.rat1IDInput.text();
+        self.__rat2ID=self.rat2IDInput.text();
+        self.__rat1CamID=self.rat1CamIDBox.value();
+        self.__rat2CamID=self.rat2CamIDBox.value();
+        rat1Valid=(self.__rat1ID!="") and (self.__rat1CamID>=0);
+        rat2Valid=(self.__rat2ID!="") and (self.__rat2CamID>=0);
+        if((not rat1Valid) and (not rat2Valid)):
             return False;
         return True;
     
+    
     def startRun(self):
-        self.setupFolders();
-        self.setInputUIEnabled(False);
-        self.startButton.setEnabled(False);
+        if(not self.__setupData()):
+            return;
+        self.__setInputUIEnabled(False);
         self.selectMasterButton.setEnabled(False);
         self.quitButton.setEnabled(False);
         
-        numFrames=self.numVideosBox.value()*self.videoDurationBox.value()*60*30;
-        self.__tData.vidFrames=[None]*numFrames;
-        self.__tData.totalFrames=numFrames;
-        self.__tData.framesPerVid=self.videoDurationBox.value()*60*30;
-        self.__tData.numVids=self.numVideosBox.value();
+        self.stopButton.setEnabled(True);
         
-        self.__vidThread.start(QThread.TimeCriticalPriority);
-        self.__analysisThread.start(QThread.LowestPriority);
-    
-    def setupFolders(self):
-        if(not self.validateInputs()):
-            return;
+        self.__nFsPerVid=self.videoDurationBox.value()*60*30;
+        self.__numVids=self.numVideosBox.value();
+
+
+    def __setupData(self):
+        if(not self.__validateInputs()):
+            return False;
         timestamp=time.time();
         dateobj=date.fromtimestamp(timestamp);
-        
         dateStr=str(dateobj.year)+"_"+str(dateobj.month)+"_"+str(dateobj.day);
         
-        folder1Str=dateStr+"_"+self.__rat1ID;
-        folder2Str=dateStr+"_"+self.__rat2ID;
+        if((self.__rat1ID!="") and (self.__rat1CamID>=0)):
+            self.__initSingleRatData(self.__rat1CamID, self.__rat1ID, dateStr);
+        if((self.__rat2ID!="") and (self.__rat2CamID>=0)):
+            self.__initSingleRatData(self.__rat2CamID, self.__rat2ID, dateStr);
+            
+        self.__initThreads();
+        return True;
         
-        self.__rat1Dir=os.path.join(self.__dataDir, folder1Str);
-        self.__rat2Dir=os.path.join(self.__dataDir, folder2Str);
         
-        os.mkdir(self.__rat1Dir);
-        os.mkdir(self.__rat2Dir);
+    def __initSingleRatData(self, camID, ratID, dateStr):
+        folderStr=dateStr+"_"+ratID;
+        folderStr=os.path.join(self.__dataDir, folderStr);
+        os.mkdir(folderStr);
         
-        self.__tData.ratIDs=[self.__rat1ID, self.__rat2ID];
-        self.__tData.ratDirs=[self.__rat1Dir, self.__rat2Dir];
+        tData=CamThreadsBuf(camID, ratID, folderStr, self.__numVids, self.__nFsPerVid);
+        self.__tData.append(tData);
+        
+    
+    def __initThreads(self):
+        self.__camThread=CamThread(self.__tData);
+        self.__procThread=ProcessThread(self.__tData);
+        QtCore.QObject.connect(self.__camThread, QtCore.SIGNAL("finished()"), self.stopRun);
+        QtCore.QObject.connect(self.__procThread, QtCore.SIGNAL("finished()"), self.__enableQuit);
+        
+        self.__camThread.start(QThread.TimeCriticalPriority);
+        self.__procThread.start(QThread.LowestPriority);
+        
         
     def stopRun(self):
-        self.__tData.stopflag=True;
+        for data in self.__tData:
+            data.terminate();
         self.stopButton.setEnabled(False);
         
-    def enableQuit(self):
+        
+    def __enableQuit(self):
         self.stopButton.setEnabled(False);
         self.quitButton.setEnabled(True);
-    
+

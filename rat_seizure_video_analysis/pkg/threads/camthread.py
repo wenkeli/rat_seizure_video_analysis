@@ -8,7 +8,7 @@ class CamThread(QThread):
         super(CamThread, self).__init__(parent);
         
         self.__tData=threadData;
-        self.__numData=len(self._tData);
+        self.__numData=len(self.__tData);
         self.__dataInds=np.r_[0:self.__numData];
         
     def run(self):
