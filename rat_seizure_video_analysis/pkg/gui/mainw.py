@@ -8,9 +8,6 @@ from PySide.QtGui import QFileDialog;
 from PySide import QtCore;
 from PySide.QtCore import Qt, QThread;
 
-# from ..threads.threadcommdata import ThreadCommData;
-# from ..threads.videothread import VideoThread;
-# from ..threads.analysisthread import AnalysisThread;
 
 from ..data.camthreadsbuf import CamThreadsBuf;
 from ..threads.camthread import CamThread;
