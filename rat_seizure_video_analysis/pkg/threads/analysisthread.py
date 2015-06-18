@@ -10,10 +10,10 @@ from PySide.QtCore import QThread;
 from .threadcommdata import ThreadCommData;
 
 class AnalysisThread(QThread):
-    def __init__(self, threadData, parent=None):
+    def __init__(self, threadDataArr, parent=None):
         super(AnalysisThread, self).__init__(parent);
         
-        self.__tData=threadData;
+        self.__tDataArr=threadDataArr;
         
     def run(self):
         fourcc=cv2.cv.CV_FOURCC("m", "p", "4", "v");
@@ -22,14 +22,14 @@ class AnalysisThread(QThread):
         
         ylevel=120;
         
-        topSumArray=np.zeros(self.__tData.totalFrames, dtype="float32");
-        buttomSumArray=np.zeros(self.__tData.totalFrames, dtype="float32");
+        topSumArray=np.zeros(self.__tDataArr.totalFrames, dtype="float32");
+        buttomSumArray=np.zeros(self.__tDataArr.totalFrames, dtype="float32");
         
         avgFrame=np.zeros((240, 320), dtype="float32");
         
         while(True):
-            if(self.__tData.analysisInd<self.__tData.acqFInd):
-                if(self.__tData.analysisInd%self.__tData.framesPerVid==0):
+            if(self.__tDataArr.analysisInd<self.__tDataArr.acqFInd):
+                if(self.__tDataArr.analysisInd%self.__tDataArr.framesPerVid==0):
                     if(vidOut is not None):
                         vidOut.release();
                     
@@ -37,8 +37,8 @@ class AnalysisThread(QThread):
                     dt=datetime.fromtimestamp(timestamp);
                     
                     fName=(str(dt.year)+"_"+str(dt.month)+"_"+str(dt.day)+"_"+
-                           self.__tData.ratIDs[0]+"_"+str(dt.hour)+"_"+str(dt.minute)+".mov");
-                    fName=os.path.join(self.__tData.ratDirs[0],
+                           self.__tDataArr.ratIDs[0]+"_"+str(dt.hour)+"_"+str(dt.minute)+".mov");
+                    fName=os.path.join(self.__tDataArr.ratDirs[0],
                                        fName);
                     vidOut=cv2.VideoWriter(fName, fourcc, 30, (320,240));
                     if(not vidOut.isOpened()):
@@ -47,7 +47,7 @@ class AnalysisThread(QThread):
                     print("video #"+str(numVids));
                     numVids=numVids+1;
                 
-                curFrame=self.__tData.vidFrames[self.__tData.analysisInd];
+                curFrame=self.__tDataArr.vidFrames[self.__tDataArr.analysisInd];
                                     
                 if(curFrame is None):
                     print("empty frame!");
@@ -56,33 +56,33 @@ class AnalysisThread(QThread):
                 vidOut.write(curFrame);
                 
                 avgFrame=avgFrame+(curFrame[:,:, 2]/90.0);
-                avgSubInd=self.__tData.analysisInd-90;
-                if(self.__tData.analysisInd>=90):
-                    avgFrame=avgFrame-(self.__tData.vidFrames[avgSubInd][:,:,2]/90.0);
+                avgSubInd=self.__tDataArr.analysisInd-90;
+                if(self.__tDataArr.analysisInd>=90):
+                    avgFrame=avgFrame-(self.__tDataArr.vidFrames[avgSubInd][:,:,2]/90.0);
                     wAvgF=avgFrame;
                 else:
-                    wAvgF=avgFrame*90/(self.__tData.analysisInd+1);
+                    wAvgF=avgFrame*90/(self.__tDataArr.analysisInd+1);
                 
-                self.__tData.vidFrames[avgSubInd]=None;
+                self.__tDataArr.vidFrames[avgSubInd]=None;
                 
                 subFrame=abs(wAvgF-curFrame[:,:,2]);
                 
                 topSum=np.sum(subFrame[0:ylevel, :]);
                 buttomSum=np.sum(subFrame[ylevel+1:, :]);
-                topSumArray[self.__tData.analysisInd]=topSum;
-                buttomSumArray[self.__tData.analysisInd]=buttomSum;
+                topSumArray[self.__tDataArr.analysisInd]=topSum;
+                buttomSumArray[self.__tDataArr.analysisInd]=buttomSum;
                 
                 
-                self.__tData.analysisInd=self.__tData.analysisInd+1;
+                self.__tDataArr.analysisInd=self.__tDataArr.analysisInd+1;
                 
             
-            if(self.__tData.stopflag and (self.__tData.analysisInd>=self.__tData.acqFInd)):
+            if(self.__tDataArr.stopflag and (self.__tDataArr.analysisInd>=self.__tDataArr.acqFInd)):
                 if(vidOut is not None):
                     vidOut.release();
                 print("stopped");
                 break;
             
-        fname=os.path.join(self.__tData.ratDirs[0], "results.np");
+        fname=os.path.join(self.__tDataArr.ratDirs[0], "results.np");
         fh=open(fname, "wb");
         pickle.dump(topSumArray, fh, protocol=2);
         pickle.dump(buttomSumArray, fh, protocol=2);

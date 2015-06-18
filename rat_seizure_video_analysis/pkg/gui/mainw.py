@@ -36,7 +36,7 @@ class MainW(QMainWindow, Ui_MainW):
         self.__nFsPerVid=-1;
         self.__numVids=-1;
         
-        self.__tData=[];
+        self.__tDataArr=[];
         self.__camThread=None;
         self.__procThread=None;
                 
@@ -119,12 +119,12 @@ class MainW(QMainWindow, Ui_MainW):
         os.mkdir(folderStr);
         
         tData=CamThreadsBuf(camID, ratID, folderStr, self.__numVids, self.__nFsPerVid);
-        self.__tData.append(tData);
+        self.__tDataArr.append(tData);
         
     
     def __initThreads(self):
-        self.__camThread=CamThread(self.__tData);
-        self.__procThread=ProcessThread(self.__tData);
+        self.__camThread=CamThread(self.__tDataArr);
+        self.__procThread=ProcessThread(self.__tDataArr);
         QtCore.QObject.connect(self.__camThread, QtCore.SIGNAL("finished()"), self.stopRun);
         QtCore.QObject.connect(self.__procThread, QtCore.SIGNAL("finished()"), self.__enableQuit);
         
@@ -133,7 +133,7 @@ class MainW(QMainWindow, Ui_MainW):
         
         
     def stopRun(self):
-        for data in self.__tData:
+        for data in self.__tDataArr:
             data.terminate();
         self.stopButton.setEnabled(False);
         

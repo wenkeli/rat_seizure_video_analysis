@@ -6,10 +6,10 @@ from PySide.QtCore import QThread;
 from .threadcommdata import ThreadCommData;
 
 class VideoThread(QThread):
-    def __init__(self, threadData, parent=None):
+    def __init__(self, threadDataArr, parent=None):
         super(VideoThread, self).__init__(parent);
         
-        self.__tData=threadData;
+        self.__tDataArr=threadDataArr;
         self.__curVidCount=0;
         
         
@@ -28,10 +28,10 @@ class VideoThread(QThread):
         
         while(True):
             (success, frame)=cam.read();
-            self.__tData.vidFrames[self.__tData.acqFInd]=frame;
-            self.__tData.acqFInd=self.__tData.acqFInd+1;
+            self.__tDataArr.vidFrames[self.__tDataArr.acqFInd]=frame;
+            self.__tDataArr.acqFInd=self.__tDataArr.acqFInd+1;
             
-            if(self.__tData.stopflag or (self.__tData.acqFInd>=self.__tData.totalFrames)):
+            if(self.__tDataArr.stopflag or (self.__tDataArr.acqFInd>=self.__tDataArr.totalFrames)):
                 print("stopped");
                 break;
             

@@ -4,19 +4,17 @@ from PySide.QtCore import QThread;
 from ..data.camthreadsbuf import CamThreadsBuf;
 
 class ProcessThread(QThread):
-    def __init__(self, threadData, parent=None):
+    def __init__(self, threadDataArr, parent=None):
         super(ProcessThread, self).__init__(parent);
         
-        self.__tData=threadData;
-        self.__numData=len(self.__tData);
-        self.__dataInds=np.r_[0:self.__numData];
+        self.__tDataArr=threadDataArr;
         
         
     def run(self):
         while(True):
             notDone=False;
-            for i in self.__dataInds:
-                notDone=notDone or self.__tData[i].processFrame();
+            for data in self.__tDataArr:
+                notDone=notDone or data.processFrame();
             
             if(not notDone):
                 print("processing done");
