@@ -1,5 +1,5 @@
 import os;
-from datetime import date;
+from datetime import datetime;
 import time;
 
 from PySide.QtGui import QMainWindow, QApplication;
@@ -82,24 +82,24 @@ class MainW(QMainWindow, Ui_MainW):
     
     
     def startRun(self):
+        
+        self.__nFsPerVid=self.videoDurationBox.value()*60*30;
+        self.__numVids=self.numVideosBox.value();
+        
         if(not self.__setupData()):
             return;
         self.__setInputUIEnabled(False);
         self.selectMasterButton.setEnabled(False);
         self.quitButton.setEnabled(False);
-        
         self.stopButton.setEnabled(True);
-        
-        self.__nFsPerVid=self.videoDurationBox.value()*60*30;
-        self.__numVids=self.numVideosBox.value();
 
 
     def __setupData(self):
         if(not self.__validateInputs()):
             return False;
         timestamp=time.time();
-        dateobj=date.fromtimestamp(timestamp);
-        dateStr=str(dateobj.year)+"_"+str(dateobj.month)+"_"+str(dateobj.day);
+        dateobj=datetime.fromtimestamp(timestamp);
+        dateStr=str(dateobj.year)+"_"+str(dateobj.month)+"_"+str(dateobj.day)+"_"+str(dateobj.hour)+"_"+str(dateobj.minute);
         
         if((self.__rat1ID!="") and (self.__rat1CamID>=0)):
             self.__initSingleRatData(self.__rat1CamID, self.__rat1ID, dateStr);
@@ -111,8 +111,8 @@ class MainW(QMainWindow, Ui_MainW):
         
         
     def __initSingleRatData(self, camID, ratID, dateStr):
-        folderStr=dateStr+"_"+ratID;
-        folderStr=os.path.join(self.__dataDir, folderStr);
+        ratID=dateStr+"_"+ratID;
+        folderStr=os.path.join(self.__dataDir, ratID);
         os.mkdir(folderStr);
         
         tData=CamThreadsBuf(camID, ratID, folderStr, self.__numVids, self.__nFsPerVid);

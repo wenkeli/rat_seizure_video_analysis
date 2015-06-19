@@ -17,14 +17,14 @@ class VideoAcquire(object):
         if(not self.__cam.isOpened()):
             return False;
         
-        success=True;
-        success = success and self.__cam.set(cv.CV_CAP_PROP_FRAME_WIDTH, self.__frameW);
-        success = success and self.__cam.set(cv.CV_CAP_PROP_FRAME_HEIGHT, self.__frameH);
-        success = success and self.__cam.set(cv.CV_CAP_PROP_FPS, self.__FPS);
-        success = success and self.__cam.set(cv.CV_CAP_PROP_BRIGHTNESS, self.__brightness);
-        success = success and self.__cam.set(cv.CV_CAP_PROP_EXPOSURE, self.__exposure);
+        self.__cam.set(cv.CV_CAP_PROP_FRAME_WIDTH, self.__frameW);
+        self.__cam.set(cv.CV_CAP_PROP_FRAME_HEIGHT, self.__frameH);
+        self.__cam.set(cv.CV_CAP_PROP_FPS, self.__FPS);
+        self.__cam.set(cv.CV_CAP_PROP_BRIGHTNESS, self.__brightness);
+        self.__cam.set(cv.CV_CAP_PROP_EXPOSURE, self.__exposure);
         
-        return success;
+        return True;
+    
     
     def acquireFrame(self):
         (success, frame)=self.__cam.read();

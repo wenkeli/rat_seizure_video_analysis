@@ -10,19 +10,19 @@ class CamThread(QThread):
         self.__tDataArr=threadDataArr;
         
     def run(self):
-        success=True;
         
         for data in self.__tDataArr:
-            success= success and data.startCam();
-        
-        if(not success):
-            print("camera error, abort");
-            return;
+            success=data.startCam();
+            print data.getRatID();
+            print data;
+            if(not success):
+                print("camera error, abort");
+                return;
         
         while(True):
             notDone=False;
             for data in self.__tDataArr:
-                notDone=notDone or data.acquireFrame();
+                notDone=data.acquireFrame();
             
             if(not notDone):
                 print("camera stopped");

@@ -14,7 +14,8 @@ class ProcessThread(QThread):
         while(True):
             notDone=False;
             for data in self.__tDataArr:
-                notDone=notDone or data.processFrame();
+                procNotDone=data.processFrame();
+                notDone=notDone or procNotDone;
             
             if(not notDone):
                 print("processing done");

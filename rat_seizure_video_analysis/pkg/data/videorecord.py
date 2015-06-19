@@ -1,6 +1,4 @@
 import cv2;
-import time;
-from datetime import datetime;
 import os;
 
 class VideoRecord(object):
@@ -8,16 +6,20 @@ class VideoRecord(object):
         self.__fcc=cv2.cv.CV_FOURCC("m", "p", "4", "v");
         self.__vidWriter=None;
         self.__ratID=ratID;
+        self.__curVidName="";
         self.__dataDir=dataDir;
         self.__numVids=numVids;
         self.__nFsPerVid=nFramesPerVid;
         self.__totalNFs=numVids*nFramesPerVid;
         self.__FPS=30;
-        self.__fDim=(320, 240);    
+        self.__fX=320;
+        self.__fY=240; 
         
         self.__fWritten=0;
         self.__curVidN=0;
         
+    def getCurVidName(self):
+        return self.__curVidName;
         
     def writeNextFrame(self, frame):
         if(self.__fWritten>=self.__totalNFs):
@@ -25,12 +27,10 @@ class VideoRecord(object):
         if(self.__fWritten%self.__nFsPerVid==0):
             if(self.__vidWriter is not None):
                 self.__vidWriter.release();
-            timestamp=time.time();
-            dt=datetime.fromtimestamp(timestamp);
-            fName=(str(self.__curVidN)+"_"+str(dt.year)+"_"+str(dt.month)+"_"+
-                   str(dt.day)+"_"+self.__ratID+str(dt.hour)+str(dt.minute)+".mov");
-            fName=os.path.join(self.__dataDir, fName);
-            self.__vidWriter=cv2.VideoWriter(fName, self.__fcc, self.__FPS, self.__fDim);
+            self.__curVidName=(str(self.__ratID)+"_"+str(self.__curVidN)+".mov");
+            fName=os.path.join(self.__dataDir, self.__curVidName);
+            self.__vidWriter=cv2.VideoWriter(fName, self.__fcc, self.__FPS, 
+                                             (self.__fX, self.__fY));
             if(not self.__vidWriter.isOpened()):
                 print("critical error: can't open vid writer");
                 return None;
@@ -41,13 +41,16 @@ class VideoRecord(object):
         if(frame is None):
             print("empty frame");
             return False;
-        
+#         print(frame.shape);
         self.__vidWriter.write(frame);
         return True;
     
     def terminate(self):
+#         print("vid record terminating");
         if(self.__vidWriter is None):
+#             print("no vid writer");
             return;
         self.__vidWriter.release();
+        print("released vid writer");
         self.__vidWriter=None;
             
