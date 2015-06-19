@@ -51,7 +51,7 @@ class VideoAnalysis(object):
         self.__sumVid=cv2.VideoWriter(fName, self.__fcc, self.__FPS,
                                       (self.__fX, self.__fY));
         
-        self.__vidIntervalEnd=0;
+        self.__vidIntervalEnd=-self.__actIntevral;
         self.__font = cv2.FONT_HERSHEY_SIMPLEX;
         
         
@@ -149,6 +149,7 @@ class VideoAnalysis(object):
         secInVid=secInVid%60;
         timeStr=str(minInVid)+"m "+str(secInVid)+"s";
         cv2.putText(frame, timeStr, (10, 20), self.__font, 0.35, (255, 255, 255), 1);
+#         print(frame.shape());
             
         self.__sumVid.write(frame);
         

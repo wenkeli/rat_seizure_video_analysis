@@ -5,8 +5,11 @@ from pkg.data.videoread import VideoRead;
 
 def analyzeVideos(ratDir, fExt=".mov"):
     ratID=os.path.basename(ratDir);
+    if(ratID==""):
+        ratID=os.path.basename(os.path.dirname(ratDir));
+    print("ratID "+ratID);
     
-    vidRead=VideoRead(ratDir, fExt);
+    vidRead=VideoRead(ratDir, "*"+fExt);
     vidProc=VideoAnalysis(ratID, ratDir, vidRead.getNumVids(), vidRead.getNumFramesPerVid());
     
     print("starting on "+ratDir);

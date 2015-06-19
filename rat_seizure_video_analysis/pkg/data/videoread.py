@@ -18,10 +18,12 @@ class VideoRead(object):
         
         self.__dataDir=os.path.expanduser(dataDir);
         self.__dataDir=os.path.abspath(self.__dataDir);
+        print(self.__dataDir);
         
         files=glob.glob1(self.__dataDir, fileExt);
-        files.sort(key=lambda x: os.stat(os.path.join(self.__dataDir, x)).st_ctime);
+        files=sorted(files, key=lambda x: os.path.getmtime(os.path.join(self.__dataDir, x)));
         self.__fileList=files;
+        print(files);
         
         self.__numVids=len(files);
         
@@ -40,6 +42,7 @@ class VideoRead(object):
             self.__vidReader.release();
             
             vidName=os.path.join(self.__dataDir, self.__fileList[self.__curVidN]);
+            print(vidName);
             self.__vidReader=cv2.VideoCapture(vidName);
             if(not self.__vidReader.IsOpened()):
                 print("problem with reading video");
@@ -48,6 +51,8 @@ class VideoRead(object):
             self.__curVidN=self.__curVidN+1;
             self.__curFN=0;
             
+        if(self.__curFN%(30*60)==0):
+            print("minute "+str(self.__curFN/(30*60)));
             
         (success, frame)=self.__vidReader.read();            
         self.__curFN=self.__curFN+1;
