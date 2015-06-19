@@ -115,7 +115,7 @@ class VideoAnalysis(object):
             self.__vidIntervalEnd=self.__curFN+self.__postEventLen;
     
     
-    def temrinate(self):
+    def terminate(self):
         if(self.__sumVid is None):
             return;
         

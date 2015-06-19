@@ -1,13 +1,21 @@
 import os;
-import glob;
 
 from pkg.data.videoanalysis import VideoAnalysis;
+from pkg.data.videoread import VideoRead;
 
-def analyzeVideos(ratDir, secondsPerVid):
-    ratDir=os.path.expanduser(ratDir);
-    ratDir=os.path.abspath(ratDir);
+def analyzeVideos(ratDir, fExt=".mov"):
+    ratID=os.path.basename(ratDir);
     
-    files=glob.glob1(ratDir, "*.mov");
-    files.sort(key=lambda x: os.stat(os.path.join(ratDir, x)).st_ctime);
+    vidRead=VideoRead(ratDir, fExt);
+    vidProc=VideoAnalysis(ratID, ratDir, vidRead.getNumVids(), vidRead.getNumFramesPerVid());
     
+    print("starting on "+ratDir);
+    while(True):
+        (frame, vidName)=vidRead.readFrame();
+        if(frame is None):
+            vidProc.terminate();
+            break;
+        vidProc.AnalyzeNextFrame(frame, vidName);
+        
+    print("finished");
     

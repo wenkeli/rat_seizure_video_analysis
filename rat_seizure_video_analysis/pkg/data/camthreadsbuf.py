@@ -66,4 +66,4 @@ class CamThreadsBuf(object):
         while(self.__procInd<self.__acqInd):
             self.__process();
         self.__vidRecord.terminate();
-        self.__vidAnalysis.temrinate();
+        self.__vidAnalysis.terminate();
