@@ -29,6 +29,9 @@ class VideoRead(object):
         
         vidName=os.path.join(self.__dataDir, self.__fileList[self.__curVidN]);
         self.__vidReader=cv2.VideoCapture(vidName);
+        if(not self.__vidReader.isOpened()):
+            print("problem with reading video");
+            return;
         self.__nFsPerVid=np.uint32(self.__vidReader.get(cv.CV_CAP_PROP_FRAME_COUNT));
         self.__curNFsInVid=self.__nFsPerVid;
         self.__curVidN=self.__curVidN+1;
