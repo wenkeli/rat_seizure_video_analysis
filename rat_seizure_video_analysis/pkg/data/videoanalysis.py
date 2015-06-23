@@ -59,6 +59,9 @@ class VideoAnalysis(object):
     def AnalyzeNextFrame(self, frame, vidName):
         if(self.__curFN>=self.__totalNFs):
             return False;
+        if(frame is None):
+            tempInd=(self.__actFBufInd-1)%self.__actIntevral;
+            frame=self.__actFBuf[tempInd];
         
         frameForBuf=frame[:,:, self.__chN]/float(self.__intBufLen);
         

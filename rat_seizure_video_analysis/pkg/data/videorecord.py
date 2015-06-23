@@ -39,8 +39,8 @@ class VideoRecord(object):
             
         self.__fWritten=self.__fWritten+1;
         if(frame is None):
-            print("empty frame");
-            return False;
+            print("empty frame");            
+            return True;
 #         print(frame.shape);
         self.__vidWriter.write(frame);
         return True;
