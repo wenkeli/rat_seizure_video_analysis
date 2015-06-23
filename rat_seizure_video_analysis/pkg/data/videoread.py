@@ -38,21 +38,23 @@ class VideoRead(object):
         if(self.__curFN>=self.__curNFsInVid):
             if(self.__curVidN>=self.__numVids):
                 self.__vidReader.release();
+                self.__curVidN=self.__curVidN+1 
                 return (None, None);
             self.__vidReader.release();
             
             vidName=os.path.join(self.__dataDir, self.__fileList[self.__curVidN]);
             print(vidName);
             self.__vidReader=cv2.VideoCapture(vidName);
-            if(not self.__vidReader.IsOpened()):
+            if(not self.__vidReader.isOpened()):
                 print("problem with reading video");
                 return (None, None);
             self.__curNFsInVid=np.uint32(self.__vidReader.get(cv.CV_CAP_PROP_FRAME_COUNT));
-            self.__curVidN=self.__curVidN+1;
+            self.__curVidN=self.__curVidN+1 
             self.__curFN=0;
             
         if(self.__curFN%(30*60)==0):
             print("minute "+str(self.__curFN/(30*60)));
+            #print(str(self.__curVidN)+" = current video number");
             
         (success, frame)=self.__vidReader.read();            
         self.__curFN=self.__curFN+1;
