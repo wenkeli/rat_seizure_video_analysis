@@ -87,6 +87,7 @@ class MainW(QMainWindow, Ui_MainW):
         self.__numVids=self.numVideosBox.value();
         
         if(not self.__setupData()):
+            self.__tDataArr=[];
             return;
         self.__setInputUIEnabled(False);
         self.selectMasterButton.setEnabled(False);

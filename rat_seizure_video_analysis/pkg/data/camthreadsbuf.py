@@ -1,5 +1,5 @@
-import numpy as np;
-import gc;
+# import numpy as np;
+# import gc;
 
 from .videorecord import VideoRecord;
 from .videoanalysis import VideoAnalysis;
@@ -40,6 +40,8 @@ class CamThreadsBuf(object):
             return False;
         self.__buf[self.__acqInd]=self.__vidAcq.acquireFrame();
         self.__acqInd=self.__acqInd+1;
+        if((self.__acqInd%1800)==0):
+            print(str(self.__acqInd));
         return True;
     
         
@@ -50,8 +52,8 @@ class CamThreadsBuf(object):
         
         if(self.__procInd<self.__acqInd):
             self.__process();
-        else:
-            gc.collect();        
+#         else:
+#             gc.collect();        
         return True;
 
     def __process(self):
