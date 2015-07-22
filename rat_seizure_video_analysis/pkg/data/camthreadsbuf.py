@@ -1,6 +1,3 @@
-# import numpy as np;
-# import gc;
-
 from .videorecord import VideoRecord;
 from .videoanalysis import VideoAnalysis;
 from .videoacquire import VideoAcquire;
@@ -51,9 +48,7 @@ class CamThreadsBuf(object):
             return False;
         
         if(self.__procInd<self.__acqInd):
-            self.__process();
-#         else:
-#             gc.collect();        
+            self.__process();      
         return True;
 
     def __process(self):
