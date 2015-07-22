@@ -16,11 +16,11 @@ class VideoAcquire(object):
         if(not self.__cam.isOpened()):
             return False;
         
-        self.__cam.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, self.__frameW);
-        self.__cam.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, self.__frameH);
-        self.__cam.set(cv2.cv.CV_CAP_PROP_FPS, self.__FPS);
-        self.__cam.set(cv2.cv.CV_CAP_PROP_BRIGHTNESS, self.__brightness);
-        self.__cam.set(cv2.cv.CV_CAP_PROP_EXPOSURE, self.__exposure);
+        self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, self.__frameW);
+        self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, self.__frameH);
+        self.__cam.set(cv2.CAP_PROP_FPS, self.__FPS);
+        self.__cam.set(cv2.CAP_PROP_BRIGHTNESS, self.__brightness);
+        self.__cam.set(cv2.CAP_PROP_EXPOSURE, self.__exposure);
         
         return True;
     
