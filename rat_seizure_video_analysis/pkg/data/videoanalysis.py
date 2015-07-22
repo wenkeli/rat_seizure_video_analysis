@@ -45,7 +45,7 @@ class VideoAnalysis(object):
         
         self.__avgFrame=np.zeros((self.__fY, self.__fX), dtype="float32");
         
-        self.__fcc=cv2.cv.CV_FOURCC("m", "p", "4", "v");
+        self.__fcc=cv2.VideoWriter_fourcc("m", "p", "4", "v");
         fName=ratID+"_filtered.mov";
         fName=os.path.join(dataDir, fName);
         self.__sumVid=cv2.VideoWriter(fName, self.__fcc, self.__FPS,

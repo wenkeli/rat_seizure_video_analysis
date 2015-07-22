@@ -3,7 +3,7 @@ import os;
 
 class VideoRecord(object):
     def __init__(self, ratID, dataDir, numVids, nFramesPerVid):
-        self.__fcc=cv2.cv.CV_FOURCC("m", "p", "4", "v");
+        self.__fcc=cv2.VideoWriter_fourcc("m", "p", "4", "v");
         self.__vidWriter=None;
         self.__ratID=ratID;
         self.__curVidName="";

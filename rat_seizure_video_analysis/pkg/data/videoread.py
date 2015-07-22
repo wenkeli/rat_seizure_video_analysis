@@ -1,5 +1,4 @@
 import cv2;
-import cv;
 import numpy as np;
 import os;
 import glob;
@@ -32,7 +31,7 @@ class VideoRead(object):
         if(not self.__vidReader.isOpened()):
             print("problem with reading video");
             return;
-        self.__nFsPerVid=np.uint32(self.__vidReader.get(cv.CV_CAP_PROP_FRAME_COUNT));
+        self.__nFsPerVid=np.uint32(self.__vidReader.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT));
         self.__curNFsInVid=self.__nFsPerVid;
         
         
@@ -50,7 +49,7 @@ class VideoRead(object):
             if(not self.__vidReader.isOpened()):
                 print("problem with reading video");
                 return (None, None);
-            self.__curNFsInVid=np.uint32(self.__vidReader.get(cv.CV_CAP_PROP_FRAME_COUNT)); 
+            self.__curNFsInVid=np.uint32(self.__vidReader.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT)); 
             self.__curFN=0;
             
         if(self.__curFN%(30*60)==0):
