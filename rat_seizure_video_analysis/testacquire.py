@@ -35,6 +35,7 @@ i=0;
  
 while(True):
 # for i in np.r_[0:7200]:
+    acq.grabFrame();
     frame=acq.acquireFrame();
     rec.writeNextFrame(frame);
     if(i>=1800*30):
