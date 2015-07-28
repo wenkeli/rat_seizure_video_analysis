@@ -36,6 +36,9 @@ class CamThreadsBuf(object):
             self.__stopAcquisition();
             return False;
         self.__buf[self.__acqInd]=self.__vidAcq.acquireFrame();
+        if(self.__buf[self.__acqInd] is None):
+            return True;
+        
         self.__acqInd=self.__acqInd+1;
         if((self.__acqInd%1800)==0):
             print(str(self.__acqInd));
