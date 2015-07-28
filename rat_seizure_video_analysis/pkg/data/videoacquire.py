@@ -24,10 +24,10 @@ class VideoAcquire(object):
         
         return True;
     
+    def grabFrame(self):
+        self.__cam.grab();
     
     def acquireFrame(self):
-        if(not self.__cam.grab()):
-            return None;
         (success, frame)=self.__cam.retrieve();
         return frame;
     

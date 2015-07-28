@@ -28,6 +28,9 @@ class CamThreadsBuf(object):
             self.__stopFlag=True;
         return camSuccess;
     
+    def grabFrame(self):
+        self.__vidAcq.grabFrame();
+    
     def acquireFrame(self):
         if(self.__acqInd>=self.__nTotalFs):
             self.__stopFlag=True;

@@ -22,6 +22,8 @@ class CamThread(QThread):
         while(True):
             notDone=False;
             for data in self.__tDataArr:
+                data.grabFrame();
+            for data in self.__tDataArr:
                 notDone=data.acquireFrame();
             
             if(not notDone):
