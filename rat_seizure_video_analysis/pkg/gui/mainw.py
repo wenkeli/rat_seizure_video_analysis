@@ -34,7 +34,7 @@ class MainW(QMainWindow, Ui_MainW):
         self.__numVids=-1;
         
         self.__tDataArr=[];
-        self.__camThread=None;
+        self.__camThreads=[];
         self.__procThread=None;
                 
         self.setWindowFlags(Qt.CustomizeWindowHint
@@ -121,12 +121,16 @@ class MainW(QMainWindow, Ui_MainW):
         
     
     def __initThreads(self):
-        self.__camThread=CamThread(self.__tDataArr);
+        for data in self.__tDataArr:
+            self.__camThreads.append(CamThread(data));
         self.__procThread=ProcessThread(self.__tDataArr);
-        QtCore.QObject.connect(self.__camThread, QtCore.SIGNAL("finished()"), self.stopRun);
+        
+        for thread in self.__camThreads:
+            QtCore.QObject.connect(thread, QtCore.SIGNAL("finished()"), self.stopRun);
         QtCore.QObject.connect(self.__procThread, QtCore.SIGNAL("finished()"), self.__enableQuit);
         
-        self.__camThread.start(QThread.TimeCriticalPriority);
+        for thread in self.__camThreads:
+            thread.start(QThread.TimeCriticalPriority);
         self.__procThread.start(QThread.LowestPriority);
         
         

@@ -4,27 +4,24 @@ from PySide.QtCore import QThread;
 from ..data.camthreadsbuf import CamThreadsBuf;
 
 class CamThread(QThread):
-    def __init__(self, threadDataArr, parent=None):
+    def __init__(self, threadData, parent=None):
         super(CamThread, self).__init__(parent);
         
-        self.__tDataArr=threadDataArr;
+        self.__tData=threadData;
         
     def run(self):
         
-        for data in self.__tDataArr:
-            success=data.startCam();
-            print data.getRatID();
-            print data;
-            if(not success):
-                print("camera error, abort");
-                return;
+        success=self.__tData.startCam();
+        print self.__tData.getRatID();
+        print self.__tData;
+        if(not success):
+            print("camera error, abort");
+            return;
         
         while(True):
             notDone=False;
-            for data in self.__tDataArr:
-                data.grabFrame();
-            for data in self.__tDataArr:
-                notDone=data.acquireFrame();
+            self.__tData.grabFrame();        
+            notDone=self.__tData.acquireFrame();
             
             if(not notDone):
                 print("camera stopped");
