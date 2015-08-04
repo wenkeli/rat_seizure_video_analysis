@@ -125,8 +125,8 @@ class MainW(QMainWindow, Ui_MainW):
             self.__camThreads.append(CamThread(data));
         self.__procThread=ProcessThread(self.__tDataArr);
         
-        for thread in self.__camThreads:
-            QtCore.QObject.connect(thread, QtCore.SIGNAL("finished()"), self.stopRun);
+#         for thread in self.__camThreads:
+#             QtCore.QObject.connect(thread, QtCore.SIGNAL("finished()"), self.stopRun);
         QtCore.QObject.connect(self.__procThread, QtCore.SIGNAL("finished()"), self.__enableQuit);
         
         for thread in self.__camThreads:
