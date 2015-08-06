@@ -288,6 +288,18 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>selectMasterButton</tabstop>
+  <tabstop>rat1IDInput</tabstop>
+  <tabstop>rat1CamIDBox</tabstop>
+  <tabstop>rat2IDInput</tabstop>
+  <tabstop>rat2CamIDBox</tabstop>
+  <tabstop>videoDurationBox</tabstop>
+  <tabstop>numVideosBox</tabstop>
+  <tabstop>startButton</tabstop>
+  <tabstop>stopButton</tabstop>
+  <tabstop>quitButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

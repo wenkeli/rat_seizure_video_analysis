@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainw.ui'
 #
-# Created: Wed Jun 17 18:06:01 2015
+# Created: Thu Aug  6 17:55:58 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -99,6 +99,15 @@ class Ui_MainW(object):
         QtCore.QObject.connect(self.startButton, QtCore.SIGNAL("clicked()"), MainW.startRun)
         QtCore.QObject.connect(self.stopButton, QtCore.SIGNAL("clicked()"), MainW.stopRun)
         QtCore.QMetaObject.connectSlotsByName(MainW)
+        MainW.setTabOrder(self.selectMasterButton, self.rat1IDInput)
+        MainW.setTabOrder(self.rat1IDInput, self.rat1CamIDBox)
+        MainW.setTabOrder(self.rat1CamIDBox, self.rat2IDInput)
+        MainW.setTabOrder(self.rat2IDInput, self.rat2CamIDBox)
+        MainW.setTabOrder(self.rat2CamIDBox, self.videoDurationBox)
+        MainW.setTabOrder(self.videoDurationBox, self.numVideosBox)
+        MainW.setTabOrder(self.numVideosBox, self.startButton)
+        MainW.setTabOrder(self.startButton, self.stopButton)
+        MainW.setTabOrder(self.stopButton, self.quitButton)
 
     def retranslateUi(self, MainW):
         MainW.setWindowTitle(QtGui.QApplication.translate("MainW", "control", None, QtGui.QApplication.UnicodeUTF8))
