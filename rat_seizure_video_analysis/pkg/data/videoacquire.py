@@ -1,4 +1,5 @@
 import cv2;
+import time;
 
 class VideoAcquire(object):
     def __init__(self, camID):
@@ -12,7 +13,9 @@ class VideoAcquire(object):
         self.__exposure=110;
         
     def initCamera(self):
+        time.sleep(10);
         self.__cam=cv2.VideoCapture(self.__camID);
+        time.sleep(10);
         if(not self.__cam.isOpened()):
             return False;
         
