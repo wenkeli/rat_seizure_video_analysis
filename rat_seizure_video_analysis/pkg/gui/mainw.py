@@ -58,8 +58,8 @@ class MainW(QMainWindow, Ui_MainW):
         
     def __setInputUIEnabled(self, enable):
         self.rat1IDInput.setEnabled(enable);
-        self.rat2IDInput.setEnabled(enable);
-        self.rat1CamIDBox.setEnabled(False);
+        self.rat2IDInput.setEnabled(False);
+        self.rat1CamIDBox.setEnabled(enable);
         self.rat2CamIDBox.setEnabled(False);
         self.videoDurationBox.setEnabled(enable);
         self.numVideosBox.setEnabled(enable);
