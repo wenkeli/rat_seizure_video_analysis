@@ -14,7 +14,7 @@ class VideoAcquire(object):
         
     def initCamera(self):
         time.sleep(10);
-        self.__cam=cv2.VideoCapture(self.__camID);
+        self.__cam=cv2.VideoCapture(self.__camID+cv2.CAP_DC1394);
         time.sleep(10);
         if(not self.__cam.isOpened()):
             return False;
