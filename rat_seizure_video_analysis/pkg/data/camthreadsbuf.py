@@ -1,3 +1,5 @@
+import time;
+
 from .videorecord import VideoRecord;
 from .videoanalysis import VideoAnalysis;
 from .videoacquire import VideoAcquire;
@@ -12,6 +14,11 @@ class CamThreadsBuf(object):
         self.__nTotalFs=numVids*nFramesPerVid;
         print(str(self.__nTotalFs)+" total number of frames")
         self.__buf=[None]*self.__nTotalFs;
+        
+        self.__curTimestamp=-1.0;
+        self.__timestampBuf=[-1.0]*self.__nTotalFs;
+        self.__tsUpdateInterval=self.__vidAcq.getFPS()*60;
+        
         self.__acqInd=0;
         self.__procInd=0;
         self.__stopFlag=False;
@@ -42,6 +49,10 @@ class CamThreadsBuf(object):
         if(self.__buf[self.__acqInd] is None):
             return True;
         
+        if(self.__acqInd%self.__tsUpdateInterval==0):
+            self.__curTimestamp=time.time();
+        self.__timestampBuf[self.__acqInd]=self.__curTimestamp;
+        
         self.__acqInd=self.__acqInd+1;
         if((self.__acqInd%1800)==0):
             print(str(self.__acqInd));
@@ -59,7 +70,8 @@ class CamThreadsBuf(object):
 
     def __process(self):
         frame=self.__buf[self.__procInd];
-        self.__vidRecord.writeNextFrame(frame);
+        ts=self.__timestampBuf[self.__procInd];
+        self.__vidRecord.writeNextFrame(frame, ts);
         self.__vidAnalysis.AnalyzeNextFrame(frame, self.__vidRecord.getCurVidName());
         self.__buf[self.__procInd]=None;
         self.__procInd=self.__procInd+1;

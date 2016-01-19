@@ -42,3 +42,6 @@ class VideoAcquire(object):
         self.__cam.release();
         self.__cam=None;
         
+        
+    def getFPS(self):
+        return self.__FPS;

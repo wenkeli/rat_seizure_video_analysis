@@ -1,5 +1,7 @@
 import cv2;
 import os;
+from datetime import datetime;
+import time;
 
 class VideoRecord(object):
     def __init__(self, ratID, dataDir, numVids, nFramesPerVid):
@@ -18,10 +20,16 @@ class VideoRecord(object):
         self.__fWritten=0;
         self.__curVidN=0;
         
+        self.__prevTimestamp=-1.0;
+        self.__curTimestamp=-1.0;
+        self.__dateObj=None;
+        self.__dateStr=None;
+        self.__font=cv2.FONT_HERSHEY_SIMPLEX;
+        
     def getCurVidName(self):
         return self.__curVidName;
         
-    def writeNextFrame(self, frame):
+    def writeNextFrame(self, frame, timestamp):
         if(self.__fWritten>=self.__totalNFs):
             return False;
         if(self.__fWritten%self.__nFsPerVid==0):
@@ -42,6 +50,14 @@ class VideoRecord(object):
             print("empty frame");            
             return True;
 #         print(frame.shape);
+
+        self.__curTimestamp=timestamp;
+        if(self.__curTimestamp!=self.__prevTimestamp):
+            self.__dateObj=datetime.fromtimestamp(self.__curTimestamp);
+            self.__dateStr="{:0>2d}".format(self.__dateObj.month)+"_"+"{:0>2d}".format(self.__dateObj.day)+" "+"{:0>2d}".format(self.__dateObj.hour)+":"+"{:0>2d}".format(self.__dateObj.minute)+":"+"{:0>2d}".format(self.__dateObj.second);
+        self.__prevTimestamp=self.__curTimestamp;
+        cv2.putText(frame, self.__dateStr, (2, 237), self.__font, 0.35, (255, 255, 255), 1);
+        
         self.__vidWriter.write(frame);
         return True;
     
