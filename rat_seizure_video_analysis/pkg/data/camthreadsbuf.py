@@ -17,7 +17,7 @@ class CamThreadsBuf(object):
         
         self.__curTimestamp=-1.0;
         self.__timestampBuf=[-1.0]*self.__nTotalFs;
-        self.__tsUpdateInterval=self.__vidAcq.getFPS()*60;
+        self.__tsUpdateInterval=self.__vidAcq.getFPS();
         
         self.__acqInd=0;
         self.__procInd=0;
