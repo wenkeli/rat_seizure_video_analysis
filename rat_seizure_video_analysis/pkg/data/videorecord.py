@@ -54,7 +54,7 @@ class VideoRecord(object):
         self.__curTimestamp=timestamp;
         if(self.__curTimestamp!=self.__prevTimestamp):
             self.__dateObj=datetime.fromtimestamp(self.__curTimestamp);
-            self.__dateStr="{:0>2d}".format(self.__dateObj.month)+"_"+"{:0>2d}".format(self.__dateObj.day)+" "+"{:0>2d}".format(self.__dateObj.hour)+":"+"{:0>2d}".format(self.__dateObj.minute)+":"+"{:0>2d}".format(self.__dateObj.second);
+            self.__dateStr="{:0>2d}".format(self.__dateObj.month)+"/"+"{:0>2d}".format(self.__dateObj.day)+"/"+str(self.__dateObj.year)+" "+"{:0>2d}".format(self.__dateObj.hour)+":"+"{:0>2d}".format(self.__dateObj.minute)+":"+"{:0>2d}".format(self.__dateObj.second);
         self.__prevTimestamp=self.__curTimestamp;
         cv2.putText(frame, self.__dateStr, (2, 237), self.__font, 0.35, (255, 255, 255), 1);
         
