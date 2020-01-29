@@ -1,0 +1,1 @@
+This is a python package to identify candidate seizure events in eplieptic rats. It handles recording the video from the camera, and identifying the events while recording the video. The identified candidate events are put in a summary video for user to review.
